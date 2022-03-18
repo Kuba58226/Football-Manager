@@ -45,12 +45,6 @@ class DefaultPlayer
     private $position;
 
     /**
-     * @ORM\ManyToOne(targetEntity=DefaultTeam::class, inversedBy="defaultPlayers")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $defaultTeam;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $goalkeeper;
@@ -74,6 +68,12 @@ class DefaultPlayer
      * @ORM\OneToMany(targetEntity=Player::class, mappedBy="defaultPlayer")
      */
     private $players;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=DefaultTeam::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $defaultTeam;
 
     public function __construct()
     {
@@ -141,18 +141,6 @@ class DefaultPlayer
     public function setPosition(string $position): self
     {
         $this->position = $position;
-
-        return $this;
-    }
-
-    public function getDefaultTeam(): ?DefaultTeam
-    {
-        return $this->defaultTeam;
-    }
-
-    public function setDefaultTeam(?DefaultTeam $defaultTeam): self
-    {
-        $this->defaultTeam = $defaultTeam;
 
         return $this;
     }
@@ -231,6 +219,18 @@ class DefaultPlayer
                 $player->setDefaultPlayer(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDefaultTeam(): ?DefaultTeam
+    {
+        return $this->defaultTeam;
+    }
+
+    public function setDefaultTeam(?DefaultTeam $defaultTeam): self
+    {
+        $this->defaultTeam = $defaultTeam;
 
         return $this;
     }

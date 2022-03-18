@@ -30,15 +30,15 @@ class DefaultTeam
     private $budget;
 
     /**
+     * @ORM\OneToMany(targetEntity=Team::class, mappedBy="defaultTeam")
+     */
+    private $teams;
+
+    /**
      * @ORM\ManyToOne(targetEntity=DefaultLeague::class, inversedBy="defaultTeams")
      * @ORM\JoinColumn(nullable=false)
      */
     private $defaultLeague;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Team::class, mappedBy="defaultTeam")
-     */
-    private $teams;
 
     public function __construct()
     {
@@ -79,18 +79,6 @@ class DefaultTeam
         return $this;
     }
 
-    public function getDefaultLeague(): ?DefaultLeague
-    {
-        return $this->defaultLeague;
-    }
-
-    public function setDefaultLeague(?DefaultLeague $defaultLeague): self
-    {
-        $this->defaultLeague = $defaultLeague;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Team>
      */
@@ -117,6 +105,18 @@ class DefaultTeam
                 $team->setDefaultTeam(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDefaultLeague(): ?DefaultLeague
+    {
+        return $this->defaultLeague;
+    }
+
+    public function setDefaultLeague(?DefaultLeague $defaultLeague): self
+    {
+        $this->defaultLeague = $defaultLeague;
 
         return $this;
     }

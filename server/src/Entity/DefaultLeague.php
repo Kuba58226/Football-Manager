@@ -29,9 +29,15 @@ class DefaultLeague
      */
     private $leagues;
 
+    /**
+     * @ORM\OneToMany(targetEntity=DefaultTeam::class, mappedBy="defaultLeague")
+     */
+    private $defaultTeams;
+
     public function __construct()
     {
         $this->leagues = new ArrayCollection();
+        $this->defaultTeams = new ArrayCollection();
     }
 
     public function __toString()
@@ -80,6 +86,36 @@ class DefaultLeague
             // set the owning side to null (unless already changed)
             if ($league->getDefaultLeague() === $this) {
                 $league->setDefaultLeague(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DefaultTeam>
+     */
+    public function getDefaultTeams(): Collection
+    {
+        return $this->defaultTeams;
+    }
+
+    public function addDefaultTeam(DefaultTeam $defaultTeam): self
+    {
+        if (!$this->defaultTeams->contains($defaultTeam)) {
+            $this->defaultTeams[] = $defaultTeam;
+            $defaultTeam->setDefaultLeague($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDefaultTeam(DefaultTeam $defaultTeam): self
+    {
+        if ($this->defaultTeams->removeElement($defaultTeam)) {
+            // set the owning side to null (unless already changed)
+            if ($defaultTeam->getDefaultLeague() === $this) {
+                $defaultTeam->setDefaultLeague(null);
             }
         }
 
