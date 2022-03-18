@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\DefaultTeamRepository;
+use App\Repository\LeagueRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=DefaultTeamRepository::class)
+ * @ORM\Entity(repositoryClass=LeagueRepository::class)
  */
-class DefaultTeam
+class League
 {
     /**
      * @ORM\Id
@@ -20,23 +20,13 @@ class DefaultTeam
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
-
-    /**
-     * @ORM\Column(type="bigint")
-     */
-    private $budget;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=DefaultLeague::class, inversedBy="defaultTeams")
+     * @ORM\ManyToOne(targetEntity=DefaultLeague::class, inversedBy="leagues")
      * @ORM\JoinColumn(nullable=false)
      */
     private $defaultLeague;
 
     /**
-     * @ORM\OneToMany(targetEntity=Team::class, mappedBy="defaultTeam")
+     * @ORM\OneToMany(targetEntity=Team::class, mappedBy="league")
      */
     private $teams;
 
@@ -45,38 +35,9 @@ class DefaultTeam
         $this->teams = new ArrayCollection();
     }
 
-    public function __toString()
-    {
-        return $this->getName();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getBudget(): ?string
-    {
-        return $this->budget;
-    }
-
-    public function setBudget(string $budget): self
-    {
-        $this->budget = $budget;
-
-        return $this;
     }
 
     public function getDefaultLeague(): ?DefaultLeague
@@ -103,7 +64,7 @@ class DefaultTeam
     {
         if (!$this->teams->contains($team)) {
             $this->teams[] = $team;
-            $team->setDefaultTeam($this);
+            $team->setLeague($this);
         }
 
         return $this;
@@ -113,8 +74,8 @@ class DefaultTeam
     {
         if ($this->teams->removeElement($team)) {
             // set the owning side to null (unless already changed)
-            if ($team->getDefaultTeam() === $this) {
-                $team->setDefaultTeam(null);
+            if ($team->getLeague() === $this) {
+                $team->setLeague(null);
             }
         }
 
