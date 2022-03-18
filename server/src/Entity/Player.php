@@ -69,12 +69,12 @@ class Player
     private $attacker;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default" : 100})
      */
     private $stamina;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default" : 0})
      */
     private $goals;
 
