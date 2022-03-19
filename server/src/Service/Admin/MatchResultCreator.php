@@ -13,7 +13,7 @@ class MatchResultCreator
 
     public const PLAYED = 'played';
 
-    public function __invoke(League $league, Team $homeTeam, Team $awayTeam, DateTime $date): MatchResult
+    public function __invoke(League $league, Team $homeTeam, Team $awayTeam, DateTime $date, int $matchDay): MatchResult
     {
         $matchResult = new MatchResult();
 
@@ -22,6 +22,7 @@ class MatchResultCreator
         $matchResult->setState(self::AWAITING);
         $matchResult->setHomeTeam($homeTeam);
         $matchResult->setAwayTeam($awayTeam);
+        $matchResult->setMatchday($matchDay);
 
         return $matchResult;
     }

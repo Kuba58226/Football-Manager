@@ -55,6 +55,11 @@ class MatchResult
      */
     private $awayTeamGoals;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $matchday;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -140,6 +145,18 @@ class MatchResult
     public function setAwayTeamGoals(?int $awayTeamGoals): self
     {
         $this->awayTeamGoals = $awayTeamGoals;
+
+        return $this;
+    }
+
+    public function getMatchday(): ?int
+    {
+        return $this->matchday;
+    }
+
+    public function setMatchday(int $matchday): self
+    {
+        $this->matchday = $matchday;
 
         return $this;
     }
