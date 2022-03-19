@@ -70,7 +70,7 @@ class DefaultPlayer
     private $players;
 
     /**
-     * @ORM\ManyToOne(targetEntity=DefaultTeam::class)
+     * @ORM\ManyToOne(targetEntity=DefaultTeam::class, inversedBy="defaultPlayers")
      * @ORM\JoinColumn(nullable=false)
      */
     private $defaultTeam;

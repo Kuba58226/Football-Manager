@@ -2,6 +2,7 @@
 
 namespace App\Service\Admin;
 
+use App\Entity\DefaultPlayer;
 use App\Entity\DefaultTeam;
 use App\Entity\League;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,23 +15,40 @@ class LeagueCreator
     private $entityManager;
 
     /**
-     * @var TeamCloner $teamCloner
+     * @var TeamCreator $teamCreator
      */
-    private $teamCloner;
+    private $teamCreator;
+
+    /**
+     * @var PlayerCreator $playerCreator
+     */
+    private $playerCreator;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        TeamCloner $teamCloner
+        TeamCreator $teamCreator,
+        PlayerCreator $playerCreator
     ) {
         $this->entityManager = $entityManager;
-        $this->teamCloner = $teamCloner;
+        $this->teamCreator = $teamCreator;
+        $this->playerCreator = $playerCreator;
     }
 
     public function __invoke(League $league)
     {
-        $defaultTeams = $league->getDefaultLeague()->getDefaultTeams()->toArray();
+        $defaultTeams = $league->getDefaultLeague()->getDefaultTeams();
+
+        /** @var DefaultTeam $defaultTeam */
         foreach ($defaultTeams as $defaultTeam) {
-            $team = ($this->teamCloner)($defaultTeam, $league);
+            $team = ($this->teamCreator)($defaultTeam, $league);
+
+            $defaultPlayers = $defaultTeam->getDefaultPlayers();
+
+            /** @var DefaultPlayer $defaultPlayer */
+            foreach ($defaultPlayers as $defaultPlayer) {
+                $player = ($this->playerCreator)($defaultPlayer, $team);
+                $this->entityManager->persist($player);
+            }
 
             $this->entityManager->persist($team);
             $this->entityManager->flush();

@@ -7,15 +7,15 @@ use App\Entity\DefaultTeam;
 use App\Entity\League;
 use App\Entity\Team;
 
-class TeamCloner
+class TeamCreator
 {
     public function __invoke(DefaultTeam $defaultTeam, League $league): Team
     {
         $team = new Team();
 
-        $team->setBudget($defaultTeam->getBudget());
         $team->setDefaultTeam($defaultTeam);
         $team->setLeague($league);
+        $team->setBudget($defaultTeam->getBudget());
 
         return $team;
     }

@@ -36,7 +36,7 @@ class Team
     private $budget;
 
     /**
-     * @ORM\ManyToOne(targetEntity=League::class, inversedBy="teams")
+     * @ORM\ManyToOne(targetEntity=League::class, inversedBy="teams", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $league;

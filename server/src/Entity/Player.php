@@ -71,12 +71,12 @@ class Player
     /**
      * @ORM\Column(type="integer", options={"default" : 100})
      */
-    private $stamina;
+    private $stamina = 100;
 
     /**
      * @ORM\Column(type="integer", options={"default" : 0})
      */
-    private $goals;
+    private $goals = 0;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
