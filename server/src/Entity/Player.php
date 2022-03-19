@@ -2,15 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\DefaultPlayerRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Repository\PlayerRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=DefaultPlayerRepository::class)
+ * @ORM\Entity(repositoryClass=PlayerRepository::class)
  */
-class DefaultPlayer
+class Player
 {
     /**
      * @ORM\Id
@@ -18,6 +16,12 @@ class DefaultPlayer
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=DefaultPlayer::class, inversedBy="players")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $defaultPlayer;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -65,24 +69,46 @@ class DefaultPlayer
     private $attacker;
 
     /**
-     * @ORM\OneToMany(targetEntity=Player::class, mappedBy="defaultPlayer")
+     * @ORM\Column(type="integer", options={"default" : 100})
      */
-    private $players;
+    private $stamina = 100;
 
     /**
-     * @ORM\ManyToOne(targetEntity=DefaultTeam::class, inversedBy="defaultPlayers")
+     * @ORM\Column(type="integer", options={"default" : 0})
+     */
+    private $goals = 0;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $suspendedTo;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $injuredTo;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="players")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $defaultTeam;
-
-    public function __construct()
-    {
-        $this->players = new ArrayCollection();
-    }
+    private $team;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getDefaultPlayer(): ?DefaultPlayer
+    {
+        return $this->defaultPlayer;
+    }
+
+    public function setDefaultPlayer(?DefaultPlayer $defaultPlayer): self
+    {
+        $this->defaultPlayer = $defaultPlayer;
+
+        return $this;
     }
 
     public function getFirstName(): ?string
@@ -193,44 +219,62 @@ class DefaultPlayer
         return $this;
     }
 
-    /**
-     * @return Collection<int, Player>
-     */
-    public function getPlayers(): Collection
+    public function getStamina(): ?int
     {
-        return $this->players;
+        return $this->stamina;
     }
 
-    public function addPlayer(Player $player): self
+    public function setStamina(int $stamina): self
     {
-        if (!$this->players->contains($player)) {
-            $this->players[] = $player;
-            $player->setDefaultPlayer($this);
-        }
+        $this->stamina = $stamina;
 
         return $this;
     }
 
-    public function removePlayer(Player $player): self
+    public function getGoals(): ?int
     {
-        if ($this->players->removeElement($player)) {
-            // set the owning side to null (unless already changed)
-            if ($player->getDefaultPlayer() === $this) {
-                $player->setDefaultPlayer(null);
-            }
-        }
+        return $this->goals;
+    }
+
+    public function setGoals(int $goals): self
+    {
+        $this->goals = $goals;
 
         return $this;
     }
 
-    public function getDefaultTeam(): ?DefaultTeam
+    public function getSuspendedTo(): ?\DateTimeInterface
     {
-        return $this->defaultTeam;
+        return $this->suspendedTo;
     }
 
-    public function setDefaultTeam(?DefaultTeam $defaultTeam): self
+    public function setSuspendedTo(?\DateTimeInterface $suspendedTo): self
     {
-        $this->defaultTeam = $defaultTeam;
+        $this->suspendedTo = $suspendedTo;
+
+        return $this;
+    }
+
+    public function getInjuredTo(): ?\DateTimeInterface
+    {
+        return $this->injuredTo;
+    }
+
+    public function setInjuredTo(?\DateTimeInterface $injuredTo): self
+    {
+        $this->injuredTo = $injuredTo;
+
+        return $this;
+    }
+
+    public function getTeam(): ?Team
+    {
+        return $this->team;
+    }
+
+    public function setTeam(?Team $team): self
+    {
+        $this->team = $team;
 
         return $this;
     }

@@ -3,3 +3,7 @@ api_login_check:
 
 admin_dashboard:
   path: /admin
+
+admin_league:
+  path: /admin/league
+  controller: App\Controller\Admin\LeagueController::createLeague

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DefaultTeamRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,10 +30,26 @@ class DefaultTeam
     private $budget;
 
     /**
+     * @ORM\OneToMany(targetEntity=Team::class, mappedBy="defaultTeam")
+     */
+    private $teams;
+
+    /**
      * @ORM\ManyToOne(targetEntity=DefaultLeague::class, inversedBy="defaultTeams")
      * @ORM\JoinColumn(nullable=false)
      */
     private $defaultLeague;
+
+    /**
+     * @ORM\OneToMany(targetEntity=DefaultPlayer::class, mappedBy="defaultTeam")
+     */
+    private $defaultPlayers;
+
+    public function __construct()
+    {
+        $this->teams = new ArrayCollection();
+        $this->defaultPlayers = new ArrayCollection();
+    }
 
     public function __toString()
     {
@@ -67,6 +85,36 @@ class DefaultTeam
         return $this;
     }
 
+    /**
+     * @return Collection<int, Team>
+     */
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    public function addTeam(Team $team): self
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams[] = $team;
+            $team->setDefaultTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(Team $team): self
+    {
+        if ($this->teams->removeElement($team)) {
+            // set the owning side to null (unless already changed)
+            if ($team->getDefaultTeam() === $this) {
+                $team->setDefaultTeam(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function getDefaultLeague(): ?DefaultLeague
     {
         return $this->defaultLeague;
@@ -75,6 +123,36 @@ class DefaultTeam
     public function setDefaultLeague(?DefaultLeague $defaultLeague): self
     {
         $this->defaultLeague = $defaultLeague;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DefaultPlayer>
+     */
+    public function getDefaultPlayers(): Collection
+    {
+        return $this->defaultPlayers;
+    }
+
+    public function addDefaultPlayer(DefaultPlayer $defaultPlayer): self
+    {
+        if (!$this->defaultPlayers->contains($defaultPlayer)) {
+            $this->defaultPlayers[] = $defaultPlayer;
+            $defaultPlayer->setDefaultTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDefaultPlayer(DefaultPlayer $defaultPlayer): self
+    {
+        if ($this->defaultPlayers->removeElement($defaultPlayer)) {
+            // set the owning side to null (unless already changed)
+            if ($defaultPlayer->getDefaultTeam() === $this) {
+                $defaultPlayer->setDefaultTeam(null);
+            }
+        }
 
         return $this;
     }
