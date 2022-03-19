@@ -5,11 +5,10 @@ namespace App\Controller\Admin;
 use App\Entity\League;
 use App\Form\Type\Admin\LeagueType;
 use App\Service\Admin\LeagueCreator;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 
-class LeagueController extends AbstractController
+class LeagueController extends AbstractDashboardController
 {
     /**
      * @var LeagueCreator
@@ -21,9 +20,6 @@ class LeagueController extends AbstractController
         $this->leagueCreator = $leagueCreator;
     }
 
-    /**
-     * @Route("/admin/league", name="admin_league")
-     */
     public function createLeague(Request $request)
     {
         $form = $this->createForm(LeagueType::class);
@@ -37,8 +33,8 @@ class LeagueController extends AbstractController
             ($this->leagueCreator)($league);
         }
 
-        return $this->renderForm('admin/league/form.html.twig', [
-            'form' => $form,
+        return $this->render('bundles/EasyAdminBundle/createLeague.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }

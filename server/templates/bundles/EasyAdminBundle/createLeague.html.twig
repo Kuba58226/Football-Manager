@@ -1,0 +1,28 @@
+{% extends '@EasyAdmin/layout.html.twig' %}
+
+{% block content_title %}
+    <div class="content-header-title">
+        <h1 class="title">
+            Create League
+        </h1>
+    </div>
+
+{% endblock %}
+
+
+{% block main %}
+    {{ form_errors(form) }}
+    {{ form_start(form) }}
+    <div class="col-md6 col-xxl-5">
+        <div class="field-text form-group">
+            {{ form_label(form.defaultLeague) }}
+            <div class="form-widget">
+                {{ form_widget(form.defaultLeague, { 'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+    </div>
+    <div class="page-actions">
+        {{ form_row(form.submit) }}
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
