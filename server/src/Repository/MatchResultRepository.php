@@ -45,32 +45,12 @@ class MatchResultRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return MatchResult[] Returns an array of MatchResult objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findMatchResultsOlderThanCurrentDate(): array
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('mr')
+            ->where('mr.date < :currentDate')
+            ->setParameter(':currentDate', new \DateTime())
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?MatchResult
-    {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
