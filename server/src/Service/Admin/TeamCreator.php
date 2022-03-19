@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Service\Admin;
 
 use App\Entity\DefaultTeam;
@@ -16,6 +15,8 @@ class TeamCreator
         $team->setDefaultTeam($defaultTeam);
         $team->setLeague($league);
         $team->setBudget($defaultTeam->getBudget());
+
+        $league->addTeam($team);
 
         return $team;
     }

@@ -24,14 +24,21 @@ class LeagueCreator
      */
     private $playerCreator;
 
+    /**
+     * @var ScheduleGenerator $scheduleGenerator
+     */
+    private $scheduleGenerator;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         TeamCreator $teamCreator,
-        PlayerCreator $playerCreator
+        PlayerCreator $playerCreator,
+        ScheduleGenerator $scheduleGenerator
     ) {
         $this->entityManager = $entityManager;
         $this->teamCreator = $teamCreator;
         $this->playerCreator = $playerCreator;
+        $this->scheduleGenerator = $scheduleGenerator;
     }
 
     public function __invoke(League $league)
@@ -53,5 +60,7 @@ class LeagueCreator
             $this->entityManager->persist($team);
             $this->entityManager->flush();
         }
+
+        ($this->scheduleGenerator)($league);
     }
 }
