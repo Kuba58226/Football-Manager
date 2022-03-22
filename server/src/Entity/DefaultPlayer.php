@@ -80,6 +80,11 @@ class DefaultPlayer
         $this->players = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->getFirstName()." ".$this->getLastName();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

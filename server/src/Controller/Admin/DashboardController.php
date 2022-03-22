@@ -5,6 +5,10 @@ namespace App\Controller\Admin;
 use App\Entity\DefaultLeague;
 use App\Entity\DefaultPlayer;
 use App\Entity\DefaultTeam;
+use App\Entity\League;
+use App\Entity\MatchResult;
+use App\Entity\Player;
+use App\Entity\Team;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -30,9 +34,15 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Default League', 'fas fa-list', DefaultLeague::class);
-        yield MenuItem::linkToCrud('Default Team', 'fas fa-list', DefaultTeam::class);
-        yield MenuItem::linkToCrud('Default Player', 'fas fa-list', DefaultPlayer::class);
-        yield MenuItem::linkToRoute('Create League', 'fas fa-list', 'admin_league');
+        yield MenuItem::section('Default Data');
+        yield MenuItem::linkToCrud('Default League', 'fas fa-trophy', DefaultLeague::class);
+        yield MenuItem::linkToCrud('Default Team', 'fas fa-users', DefaultTeam::class);
+        yield MenuItem::linkToCrud('Default Player', 'fas fa-user', DefaultPlayer::class);
+        yield MenuItem::section('Players Data');
+        yield MenuItem::linkToCrud('Leagues', 'fas fa-trophy', League::class);
+        yield MenuItem::linkToCrud('Teams', 'fas fa-users', Team::class);
+        yield MenuItem::linkToCrud('Players', 'fas fa-user', Player::class);
+        yield MenuItem::linkToCrud('Matches', 'fa fa-handshake-o', MatchResult::class);
+        yield MenuItem::linkToRoute('Create League', 'fas fa-plus', 'admin_league');
     }
 }

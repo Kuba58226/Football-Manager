@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\DefaultLeague;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class DefaultLeagueCrudController extends AbstractCrudController
@@ -17,6 +18,8 @@ class DefaultLeagueCrudController extends AbstractCrudController
     {
         return [
             TextField::new('name'),
+            AssociationField::new('leagues'),
+            AssociationField::new('defaultTeams'),
         ];
     }
 }

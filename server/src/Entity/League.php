@@ -41,6 +41,11 @@ class League
         $this->matchResults = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->getDefaultLeague()->getName();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
