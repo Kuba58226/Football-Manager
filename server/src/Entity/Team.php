@@ -51,6 +51,11 @@ class Team
         $this->players = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->getDefaultTeam()->getName();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

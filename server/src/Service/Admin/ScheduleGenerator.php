@@ -40,7 +40,9 @@ class ScheduleGenerator
         for ($i = 0; $i < $leagueSize - 1; $i++) {
             for ($j = 0; $j < $leagueSize / 2; $j++) {
                 $matchResult = ($this->matchResultCreator)($league, $teamsArray[$j], $teamsArray[$j + ($leagueSize / 2)], new DateTime("now"), $i + 1);
+                $rematchMatchResult = ($this->matchResultCreator)($league, $teamsArray[$j + ($leagueSize / 2)], $teamsArray[$j], new DateTime("now"), ($leagueSize - 1) + $i + 1);
                 $this->entityManager->persist($matchResult);
+                $this->entityManager->persist($rematchMatchResult);
             }
             $this->entityManager->flush();
             $lastTeam = array_pop($teamsArray);
