@@ -7,3 +7,8 @@ admin_dashboard:
 admin_league:
   path: /admin/league
   controller: App\Controller\Admin\LeagueController::createLeague
+
+register:
+  path: /api/register
+  controller: App\Controller\User\RegisterController::register
+  methods: "POST"
