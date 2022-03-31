@@ -31,7 +31,7 @@ class RegisterController extends AppController
         $this->userRepository = $userRepository;
     }
 
-    public function register(Request $request)
+    public function register(Request $request): Response
     {
         $form = $this->createForm(UserRegisterType::class);
         $form->handleRequest($request);
