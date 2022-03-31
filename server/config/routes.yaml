@@ -12,3 +12,13 @@ register:
   path: /api/register
   controller: App\Controller\User\RegisterController::register
   methods: "POST"
+
+take_over_team:
+  path: /api/team/take-over/{id}
+  controller: App\Controller\Team\TeamController::takeOverTeam
+  methods: "POST"
+
+leave_team:
+  path: /api/team/leave/{id}
+  controller: App\Controller\Team\TeamController::leaveTeam
+  methods: "POST"
